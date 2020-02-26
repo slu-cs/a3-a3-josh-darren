@@ -6,29 +6,38 @@
 
   <form id="initial">
     <p> Enter the Question</p>
-    <input type="text" name="Name">
+    <input type="text" name="Name" id="question">
 
     <p>Enter The Number of Options</p>
-    <input type="text" name="count">
+    <input type="text" name="count" id="count">
 
     <button type="submit">Create New Poll</button>
   </form>
+
+  <div id="answers"></div>
+
 
   <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <script>
 
     $('form').on('submit', function(event) {
+      const form = $(this);
+      event.preventDefault();
 
-    }
+      const cnt = form.find('#count');
+      const qu = form.find('#question');
+
+
+      const question = $(`<div> ${qu.val()} </div>`);
+
+      const list = $('<ul></ul>');
+      for (q = 0; q < cnt.val(); q++) {
+        const li = $(`<li> <input type="text" name="answer"> </li>`)
+        list.append(li);}
+
+
+      $('#answers').append(list);
+    });
 
   </script>
-
-  <div id="answers">
-
-
-  </div>
-
-  <div id="poll">
-
-
-  </div>
+</body>
