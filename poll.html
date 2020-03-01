@@ -14,34 +14,70 @@
     <button type="submit">Create New Poll</button>
   </form>
 
-  <div id="answers"></div>
+  <form id="answers"></form>
+
+  <form id="poll"></form>
+
+  <div id="results"></div>
 
 
   <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <script>
 
-    $('form').on('submit', function(event) {
-      const form = $(this);
-      event.preventDefault();
+    $('#initial').on('submit', function(event) {
 
+      event.preventDefault();
+      const form = $(this);
       const cnt = form.find('#count');
       const qu = form.find('#question');
-
-
-      const question = $(`<div> ${qu.val()} </div>`);
+      const question = $(`<div id="quest"> ${qu.val()} </div>`);
 
       const list = $('<ul></ul>');
-      for (q = 0; q < cnt.val(); q++) {
-        const li = $(`<li> <input type="text" name="answer"> </li>`)
-        list.append(li);}
 
+      for (q = 0; q < cnt.val(); q++) {
+        const li = $(`<div> <input type="text" name="answer"> </div>`)
+        list.append(li);}
 
       const button = $(`<button> ${'Submit Answers'}</button>`);
 
       $('#answers').append(question);
       $('#answers').append(list);
-      $('#answers').append(button);
-    });
+      $('#answers').append(button); });
+
+
+
+    // Delete the previous Intial Screen
+    $('#initial').on('submit', function(event) {
+      $(this).closest('form').remove(); });
+
+
+
+    // Set up the poll
+    $('#answers').on('submit', function(event){
+      const form = $(this);
+      event.preventDefault();
+
+      const list = $('<ul></ul>');
+      const inputs = form.find('input');
+      const question = form.find('#quest')
+
+      for (let input of inputs){
+        input = $(input);
+        const li = $
+        (`<div> ${input.val()}
+            <input type="checkbox" value=${input.val()}>
+        </div>`)
+        list.append(li);
+        input.val('')}
+
+      $('#poll').append(question);
+      $('#poll').append(list); });
+
+
+    // Delete the Answers screen
+    $('#answers').on('submit', function(event) {
+    $(this).closest('form').remove(); });
+
 
   </script>
 </body>
