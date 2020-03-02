@@ -16,7 +16,7 @@
 
   <form id="answers"></form>
 
-  <form id="poll"></form>
+  <fieldset class="form-group" id="poll"></fieldset>
 
   <div id="results"></div>
 
@@ -64,19 +64,30 @@
       for (let input of inputs){
         input = $(input);
         const li = $
-        (`<div> ${input.val()}
-            <input type="checkbox" value=${input.val()}>
+        (`<div class="form-check">
+            <input type="radio" class="form-check-input" value=${input.val()}>
         </div>`)
+
+        /*
+        (`<div class="form-check">
+            <input type="radio" id=${input.val} class="form-check-input" value=${input.val()}>
+            <label for=${counter} class="form-check-label">${input.val()}</label>
+        </div>`)
+        */
+
         list.append(li);
         input.val('')}
 
       $('#poll').append(question);
-      $('#poll').append(list); });
-
+      $('#poll').append(list);
+      $('#poll').append(`<button type="submit">Submit Poll</button>`);
+    });
 
     // Delete the Answers screen
     $('#answers').on('submit', function(event) {
     $(this).closest('form').remove(); });
+
+
 
 
   </script>
