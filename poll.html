@@ -16,9 +16,13 @@
 
   <form id="answers"></form>
 
-  <fieldset class="form-group" id="poll"></fieldset>
+  <form id="poll" class="m-3 border p-3">
 
-  <div id="results"></div>
+  </form>
+
+  <div id="results">
+
+  </div>
 
 
   <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -38,7 +42,7 @@
         const li = $(`<div> <input type="text" name="answer"> </div>`)
         list.append(li);}
 
-      const button = $(`<button> ${'Submit Answers'}</button>`);
+      const button = $(`<button> Submit Answers</button>`);
 
       $('#answers').append(question);
       $('#answers').append(list);
@@ -57,30 +61,19 @@
       const form = $(this);
       event.preventDefault();
 
-      const list = $('<ul></ul>');
+      $('#poll').append(quest);
       const inputs = form.find('input');
-      const question = form.find('#quest')
-
+      const question = form.find('#quest');
+      let counter = 0;
       for (let input of inputs){
-        input = $(input);
-        const li = $
-        (`<div class="form-check">
-            <input type="radio" class="form-check-input" value=${input.val()}>
+        input = $(input); // Turn intp JQuery
+        const li = $(`<div class="form-check">
+          <input type="radio" id="${counter}" name="radio" value="${input.val()}" class="form-check-input">
+          <label for="${counter}" class="form-check-label">${input.val()}</label>
         </div>`)
-
-        /*
-        (`<div class="form-check">
-            <input type="radio" id=${input.val} class="form-check-input" value=${input.val()}>
-            <label for=${counter} class="form-check-label">${input.val()}</label>
-        </div>`)
-        */
-
-        list.append(li);
-        input.val('')}
-
-      $('#poll').append(question);
-      $('#poll').append(list);
-      $('#poll').append(`<button type="submit">Submit Poll</button>`);
+        counter += 1
+        $('#poll').append(li);
+      }
     });
 
     // Delete the Answers screen
