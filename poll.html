@@ -1,70 +1,70 @@
 <head>
     <meta charset="utf-8">
     <title>Making Poll</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
 <body>
 
-  <form id="initial">
-    <p> Enter the Question</p>
-    <input type="text" name="Name" id="question">
+    <div id="inital">
+      <form class="m-3 border p-3" id="initial">
+        <div class ="form-group">
+          <p> Enter the Question</p>
+          <input type="text" name="Name" id="question">
+        </div>
+        <div class ="form-group">
+          <p>Enter The Number of Options Numerically</p>
+          <input type="text" name="count" id="count">
+        </div>
+        <button type="submit" class="btn btn-primary">Create New Poll</button>
+      </form>
+    </div>
 
-    <p>Enter The Number of Options</p>
-    <input type="text" name="count" id="count">
 
-    <button type="submit">Create New Poll</button>
-  </form>
+    <div id="answers"> </div>
 
-  <form id="answers"></form>
+    <div id="poll"> </div>
 
-  <form id="poll" class="m-3 border p-3">
-
-  </form>
-
-  <div id="results">
-
-  </div>
 
 
   <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
   <script>
 
     $('#initial').on('submit', function(event) {
-
       event.preventDefault();
+
       const form = $(this);
       const cnt = form.find('#count');
       const qu = form.find('#question');
-      const question = $(`<div id="quest"> ${qu.val()} </div>`);
+      const question = $(`<h4 id="quest" class="m-3 p-1"> Possible resposones for (${qu.val()}) </h4>`);
 
-      const list = $('<ul></ul>');
+      const list = $('<form class="m-2 border p-3">');
+      list.append(question);
 
       for (q = 0; q < cnt.val(); q++) {
-        const li = $(`<div> <input type="text" name="answer"> </div>`)
+        const li = $(`<div class = "form-group"> <input type="text" name="answer"></div>`)
         list.append(li);}
 
-      const button = $(`<button> Submit Answers</button>`);
-
+      list.append(`<button type="submit" class="btn btn-primary">Submit Answer Key</button>`);
       $('#answers').append(question);
       $('#answers').append(list);
-      $('#answers').append(button); });
-
-
+    });
 
     // Delete the previous Intial Screen
     $('#initial').on('submit', function(event) {
-      $(this).closest('form').remove(); });
-
-
+      $(this).closest('div').remove(); });
 
     // Set up the poll
-    $('#answers').on('submit', function(event){
-      const form = $(this);
-      event.preventDefault();
+    $('#answers').on('submit', function(event) {
 
-      $('#poll').append(quest);
+      event.preventDefault();
+      const form = $(this);
       const inputs = form.find('input');
       const question = form.find('#quest');
       let counter = 0;
+
+      const list = $(`<form id="poll" class="m-3 border p-3"> <fieldset class="form-group"> </fieldset></form>`);
+
       for (let input of inputs){
         input = $(input); // Turn intp JQuery
         const li = $(`<div class="form-check">
@@ -72,16 +72,38 @@
           <label for="${counter}" class="form-check-label">${input.val()}</label>
         </div>`)
         counter += 1
-        $('#poll').append(li);
-      }
+        list.append(li);}
+
+
+      $('#poll').append(question)
+      $('#poll').append(list);
+      $('#poll').append(`<button id="tally" class="btn btn-primary m-3 p-2"> Tally all results </button>`)
+      $('#poll').append(`<button id="another" class="btn btn-primary m-3 p-2"> Enter another answer </button>`)
     });
 
-    // Delete the Answers screen
     $('#answers').on('submit', function(event) {
-    $(this).closest('form').remove(); });
+      $(this).closest('div').remove();
+    });
+
+    $('#poll').on('click','#tally',function(event) {
+
+
+    });
+
+
+    $('#poll').on('click','#another',function(event) {
+
+
+    });
+
+
+
+
 
 
 
 
   </script>
+
+
 </body>
