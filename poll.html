@@ -26,8 +26,11 @@
 <!-- Enter the asnwers Screen-->
     <div id="answers"> </div>
 
-<!-- Poll -->
-    <div id="poll"> </div>
+<!-- Poll Check_box -->
+    <div id="poll_check"> </div>
+
+<!-- Poll radio buttons -->
+    <div id="poll_radio"> </div>
 
 <!-- table of results-->
     <div id="table" </div>
@@ -36,6 +39,9 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 
     <script>
+
+      // Needed later for the lables and
+      let counter = 0;
 
       // Build up a set of inputs for answers
       $('#initial').on('submit', function(event) {
@@ -46,13 +52,12 @@
         const qu = form.find('#question');
         const question =
 
+        //Set up The Question
         $(`<h4 class="ml-2 mt-2"> Possible resposones for </h4>
-           <h4 id="quest" class="ml-4 mb-2 mt-2 "> ${qu.val()} </h4>
-        `);
+           <h4 id="quest" class="ml-4 mb-2 mt-2 "> ${qu.val()} </h4>`);
 
+        // Make the form
         const list = $('<form class="m-2 border p-3">');
-
-
         for (q = 0; q < cnt.val(); q++) {
           const li = $(`<div class = "form-group"> <input type="text" name="answer"></div>`)
           list.append(li);}
@@ -60,6 +65,8 @@
 
         list.append(`<button id="single"  class="btn btn-primary m-1">Submit Answer Key (Single Answer per poll)</button>`);
         list.append(`<button id='multi' class="btn btn-secondary m-1">Submit Answer Key (Mutliple Answers per poll)</button>`);
+
+        // Append to the the answers div
         $('#answers').append(question);
         $('#answers').append(list);
 
@@ -71,14 +78,19 @@
       $('#answers').on('click','#single', function(event) {
         event.preventDefault();
 
-        let counter = 0;
+        // all the varibales
         const form = $((this).closest('form'));
         const div = $((this).closest('div'));
         const inputs = form.find('input');
         const question = div.find('#quest');
         const list = $(`<form id="poll" class="m-3 border p-3"> <fieldset class="form-group"> </fieldset></form>`);
 
+        // Need to Bootstrap
+        // Set up our tally table
+        const table = $(`<table style="width:100%" id="my_table"></table>`);
+        table.append(`<tr> <th>Answer</th> <th>Count</th> </tr>`);
 
+        // read through the Inputs and set up the poll and table
         for (let input of inputs){
           input = $(input);
 
@@ -88,53 +100,94 @@
             <label for="${counter}" class="form-check-label">${input.val()}</label>
             </div>`)
 
-          counter += 1
-          list.append(li);}
+            // Need to Bootstrap
+            const row = (`<tr> <th>${input.val()}</th> <th>0</th> </tr>`);
+
+            table.append(row);
+            list.append(li);
+            counter += 1;}
 
         list.append(`<button type="submit" class="btn btn-primary m-3 p-2"> New Poll </button>`);
         list.append(`<button type="reset" id="tally" class="btn btn-primary m-3 p-2"> Tally all results </button>`);
-        $('#poll').append(question);
-        $('#poll').append(list);
+
+        // Add info to the correct values
+        $('#poll_radio').append(question);
+        $('#poll_radio').append(list);
+        $('#table').append(table);
 
         $(this).closest('div').remove();
 
       });
 
       // set up poll for multi choice check-boxes
+      // Same as radio buttons only difference is that
       $('#answers').on('click','#multi', function(event) {
         event.preventDefault();
 
-        let counter = 0;
+
         const form = $((this).closest('form'));
         const div = $((this).closest('div'));
         const inputs = form.find('input');
         const question = div.find('#quest');
         const list = $(`<form id="poll" class="m-3 border p-3"> <fieldset class="form-group"> </fieldset></form>`);
 
+        //Need to Boostrap
+        const table = $(`<table style="width:100%" id="my_table"></table>`);
+        table.append(`<tr> <th>Answer</th> <th class="value">Count</th> </tr>`);
 
         for (let input of inputs){
           input = $(input);
 
           const li =
           $(`<div class="form-check">
-            <input type="checkbox" id="${counter}" name="radio" value="${input.val()}" class="form-check-input">
+            <input type="checkbox" id="${counter}" name="check" value="${input.val()}" class="form-check-input">
             <label for="${counter}" class="form-check-label">${input.val()}</label>
            </div>`)
 
-          counter += 1
-          list.append(li);}
+          const row = (`<tr> <th>${input.val()}</th> <th>0</th> </tr>`);
+
+          table.append(row);
+          list.append(li);
+          counter += 1;}
 
         list.append(`<button type="submit" class="btn btn-primary m-3 p-2"> New Poll </button>`);
         list.append(`<button type="reset" id="tally" class="btn btn-primary m-3 p-2"> Tally all results </button>`);
-        $('#poll').append(question);
-        $('#poll').append(list);
+        $('#poll_check').append(question);
+        $('#poll_check').append(list);
+        $('#table').append(table);
 
         $(this).closest('div').remove();
       });
 
       // Make a table of all the results
-      $('#poll').on('click','#tally',function(event) {
-        console.log("Hello world")
+      $('#poll_check').on('click','#tally',function(event) {
+        event.preventDefault();
+        const form = $((this).closest('form'));
+        const inputs = form.find('input');
+        var answers = []
+
+        for (let input of inputs){
+          if ($(input).is(":checked")){
+                  answers.push($(input).val())
+                }
+
+          $(input).prop('checked', false); }
+
+          var table = $('#my_table');
+          for (let val of answers){
+            table.find('tr').each(function (i, el) {
+              var $ths = $(this).find('th'),
+                answer = $ths.eq(0).text(),
+                value = $ths.eq(1).text()
+
+                if (String(val) === String(answer)){
+                  $(`#my_table tr:contains(${val}) th`).eq(1).html(Number(value) + 1);}
+              });
+            }
+      });
+
+      $('#poll_radio').on('click','#tally',function(event) {
+        console.log(counter)
       });
 
     </script>
