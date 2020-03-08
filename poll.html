@@ -187,7 +187,29 @@
       });
 
       $('#poll_radio').on('click','#tally',function(event) {
-        console.log(counter)
+        event.preventDefault();
+        const form = $((this).closest('form'));
+        const inputs = form.find('input');
+        var answers = []
+
+        for (let input of inputs){
+          if ($(input).is(":checked")){
+                  answers.push($(input).val())
+                }
+
+          $(input).prop('checked', false); }
+
+          var table = $('#my_table');
+          for (let val of answers){
+            table.find('tr').each(function (i, el) {
+              var $ths = $(this).find('th'),
+                answer = $ths.eq(0).text(),
+                value = $ths.eq(1).text()
+
+                if (String(val) === String(answer)){
+                  $(`#my_table tr:contains(${val}) th`).eq(1).html(Number(value) + 1);}
+              });
+            }
       });
 
     </script>
