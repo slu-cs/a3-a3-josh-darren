@@ -10,6 +10,7 @@
 
 <!-- Main Screen for a poll-->
     <div id="initial">
+      <h3 class="ml-3 mt-2">Create Poll:</h3>
       <form class="m-3 border p-3" id="initial">
         <div class ="form-group">
           <p> Enter the Question</p>
@@ -27,10 +28,7 @@
     <div id="answers"> </div>
 
 <!-- Poll Check_box -->
-    <div id="poll_check"> </div>
-
-<!-- Poll radio buttons -->
-    <div id="poll_radio"> </div>
+    <div id="poll"> </div>
 
 <!-- table of results-->
     <div id="table"> </div>
@@ -40,7 +38,7 @@
 
     <script>
 
-      // Needed later for the lables and
+      // Needed later for the labels
       let counter = 0;
 
       // Build up a set of inputs for answers
@@ -53,9 +51,8 @@
 
         // Set up Question
         const question =
-        $(`<h4 class="ml-2 mt-2"> Possible resposones for </h4>
-           <h4 id="quest" class="ml-4 mb-2 mt-2 "> ${qu.val()} </h4>
-           <h4 class="ml-4 mb-2 mt-2 "> (must be unique responses) </h4>`);
+        $(`<h4 class="ml-4 mt-2"> Possible unique responses for: </h4>
+           <h4 id="quest" class="ml-4 mb-2 mt-2 "> ${qu.val()} </h4>`);
 
         // Make the form
         const list = $('<form class="m-2 border p-3">');
@@ -86,7 +83,7 @@
         const question = div.find('#quest');
         const list = $(`<form id="poll" class="m-3 border p-3"> <fieldset class="form-group"> </fieldset></form>`);
 
-        //Set up Table
+        // Set up Table
         const table = $(`<table class="table" id="my_table"></table>`);
         table.append(`<thead> <tr scope="row"> <th scope="col" >Answer</th> <th scope="col">Count</th> </tr> <thead>`);
         table.append('<tbody>')
@@ -102,7 +99,7 @@
             <label for="${counter}" class="form-check-label">${input.val()}</label>
             </div>`)
 
-            
+
             const row = (`<tr scope="row"> <td scope="col">${input.val()}</td> <td scope="col">0</td> </tr>`);
 
 
@@ -114,12 +111,11 @@
         list.append(`<button type="reset" id="tally" class="btn btn-primary m-3 p-2"> Tally all results </button>`);
 
         // Add info to the correct values
-        $('#poll_radio').append(question);
-        $('#poll_radio').append(list);
+        $('#poll').append(question);
+        $('#poll').append(list);
         $('#table').append(table);
 
         $(this).closest('div').remove();
-
       });
 
       // set up poll for multi choice check-boxes
@@ -157,20 +153,21 @@
         table.append('</tbody>')
         list.append(`<button type="submit" class="btn btn-primary m-3 p-2"> New Poll </button>`);
         list.append(`<button type="reset" id="tally" class="btn btn-primary m-3 p-2"> Tally all results </button>`);
-        $('#poll_check').append(question);
-        $('#poll_check').append(list);
+        $('#poll').append(question);
+        $('#poll').append(list);
         $('#table').append(table);
 
         $(this).closest('div').remove();
       });
 
-      // Make a table of all the results
-      $('#poll_check').on('click','#tally',function(event) {
+      // Tallying the results onto a table
+      $('#poll').on('click','#tally',function(event) {
         event.preventDefault();
         const form = $((this).closest('form'));
         const inputs = form.find('input');
         var answers = []
 
+        // Getting a list of all the checked values
         for (let input of inputs){
           if ($(input).is(":checked")){
                   answers.push($(input).val())
@@ -179,38 +176,15 @@
           $(input).prop('checked', false); }
 
           var table = $('#my_table');
+
+          // Reading through values that were checked
           for (let val of answers){
+            // Reading through each table row
             table.find('tr').each(function (i, el) {
               var $ths = $(this).find('td'),
                 answer = $ths.eq(0).text(),
                 value = $ths.eq(1).text()
-
-                if (String(val) === String(answer)){
-                  $(`#my_table tr:contains(${val}) td`).eq(1).html(Number(value) + 1);}
-              });
-            }
-      });
-
-      $('#poll_radio').on('click','#tally',function(event) {
-        event.preventDefault();
-        const form = $((this).closest('form'));
-        const inputs = form.find('input');
-        var answers = []
-
-        for (let input of inputs){
-          if ($(input).is(":checked")){
-                  answers.push($(input).val())
-                }
-
-          $(input).prop('checked', false); }
-
-          var table = $('#my_table');
-          for (let val of answers){
-            table.find('tr').each(function (i, el) {
-              var $ths = $(this).find('td'),
-                answer = $ths.eq(0).text(),
-                value = $ths.eq(1).text()
-
+                // Checks to see if this value is equal to checked value and increments when true
                 if (String(val) === String(answer)){
                   $(`#my_table tr:contains(${val}) td`).eq(1).html(Number(value) + 1);}
               });
