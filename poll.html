@@ -81,7 +81,7 @@
         const div = $((this).closest('div'));
         const inputs = form.find('input');
         const question = div.find('#quest');
-        const list = $(`<form id="poll" class="m-3 border p-3"> <fieldset class="form-group"> </fieldset></form>`);
+        const list = $(`<form class="m-3 border p-3"> <fieldset class="form-group"> </fieldset></form>`);
 
         // Set up Table
         const table = $(`<table class="table" id="my_table"></table>`);
@@ -179,7 +179,7 @@
 
           // Reading through values that were checked
           for (let val of answers){
-            
+
             //row count
             let row_count = 0
 
