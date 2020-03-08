@@ -9,7 +9,7 @@
   <body>
 
 <!-- Main Screen for a poll-->
-    <div id="inital">
+    <div id="initial">
       <form class="m-3 border p-3" id="initial">
         <div class ="form-group">
           <p> Enter the Question</p>
@@ -33,7 +33,7 @@
     <div id="poll_radio"> </div>
 
 <!-- table of results-->
-    <div id="table" </div>
+    <div id="table"> </div>
 
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -50,11 +50,12 @@
         const form = $(this);
         const cnt = form.find('#count');
         const qu = form.find('#question');
-        const question =
 
-        //Set up The Question
+        // Set up Question
+        const question =
         $(`<h4 class="ml-2 mt-2"> Possible resposones for </h4>
-           <h4 id="quest" class="ml-4 mb-2 mt-2 "> ${qu.val()} </h4>`);
+           <h4 id="quest" class="ml-4 mb-2 mt-2 "> ${qu.val()} </h4>
+           <h4 class="ml-4 mb-2 mt-2 "> (must be unique responses) </h4>`);
 
         // Make the form
         const list = $('<form class="m-2 border p-3">');
@@ -67,7 +68,7 @@
         list.append(`<button id='multi' class="btn btn-secondary m-1">Submit Answer Key (Mutliple Answers per poll)</button>`);
 
         // Append to the the answers div
-        $('#answers').append(question);
+        $('#answers').append(question)
         $('#answers').append(list);
 
         // Delte the current screen
@@ -85,10 +86,11 @@
         const question = div.find('#quest');
         const list = $(`<form id="poll" class="m-3 border p-3"> <fieldset class="form-group"> </fieldset></form>`);
 
-        // Need to Bootstrap
-        // Set up our tally table
-        const table = $(`<table style="width:100%" id="my_table"></table>`);
-        table.append(`<tr> <th>Answer</th> <th>Count</th> </tr>`);
+        //Set up Table
+        const table = $(`<table class="table" id="my_table"></table>`);
+        table.append(`<thead> <tr scope="row"> <th scope="col" >Answer</th> <th scope="col">Count</th> </tr> <thead>`);
+        table.append('<tbody>')
+
 
         // read through the Inputs and set up the poll and table
         for (let input of inputs){
@@ -100,8 +102,9 @@
             <label for="${counter}" class="form-check-label">${input.val()}</label>
             </div>`)
 
-            // Need to Bootstrap
-            const row = (`<tr> <th>${input.val()}</th> <th>0</th> </tr>`);
+            
+            const row = (`<tr scope="row"> <td scope="col">${input.val()}</td> <td scope="col">0</td> </tr>`);
+
 
             table.append(row);
             list.append(li);
@@ -132,8 +135,9 @@
         const list = $(`<form id="poll" class="m-3 border p-3"> <fieldset class="form-group"> </fieldset></form>`);
 
         //Need to Boostrap
-        const table = $(`<table style="width:100%" id="my_table"></table>`);
-        table.append(`<tr> <th>Answer</th> <th class="value">Count</th> </tr>`);
+        const table = $(`<table class="table" id="my_table"></table>`);
+        table.append(`<thead> <tr scope="row"> <th scope="col" >Answer</th> <th scope="col">Count</th> </tr> <thead>`);
+        table.append('<tbody>')
 
         for (let input of inputs){
           input = $(input);
@@ -144,12 +148,13 @@
             <label for="${counter}" class="form-check-label">${input.val()}</label>
            </div>`)
 
-          const row = (`<tr> <th>${input.val()}</th> <th>0</th> </tr>`);
+          const row = (`<tr scope="row"> <td scope="col">${input.val()}</td> <td scope="col">0</td> </tr>`);
 
           table.append(row);
           list.append(li);
           counter += 1;}
 
+        table.append('</tbody>')
         list.append(`<button type="submit" class="btn btn-primary m-3 p-2"> New Poll </button>`);
         list.append(`<button type="reset" id="tally" class="btn btn-primary m-3 p-2"> Tally all results </button>`);
         $('#poll_check').append(question);
@@ -176,12 +181,12 @@
           var table = $('#my_table');
           for (let val of answers){
             table.find('tr').each(function (i, el) {
-              var $ths = $(this).find('th'),
+              var $ths = $(this).find('td'),
                 answer = $ths.eq(0).text(),
                 value = $ths.eq(1).text()
 
                 if (String(val) === String(answer)){
-                  $(`#my_table tr:contains(${val}) th`).eq(1).html(Number(value) + 1);}
+                  $(`#my_table tr:contains(${val}) td`).eq(1).html(Number(value) + 1);}
               });
             }
       });
@@ -202,12 +207,12 @@
           var table = $('#my_table');
           for (let val of answers){
             table.find('tr').each(function (i, el) {
-              var $ths = $(this).find('th'),
+              var $ths = $(this).find('td'),
                 answer = $ths.eq(0).text(),
                 value = $ths.eq(1).text()
 
                 if (String(val) === String(answer)){
-                  $(`#my_table tr:contains(${val}) th`).eq(1).html(Number(value) + 1);}
+                  $(`#my_table tr:contains(${val}) td`).eq(1).html(Number(value) + 1);}
               });
             }
       });
