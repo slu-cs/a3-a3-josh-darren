@@ -10,14 +10,14 @@
 
 <!-- Main Screen for a poll-->
     <div id="initial">
-      <h3 class="ml-3 mt-2">Create Poll:</h3>
+      <h3 class="ml-3 mt-2">Create Poll</h3>
       <form class="m-3 border p-3" id="initial">
         <div class ="form-group">
-          <p> Enter the Question</p>
+          <p> Enter a Question:</p>
           <input type="text" name="Name" id="question">
         </div>
         <div class ="form-group">
-          <p>Enter The Number of Options Numerically</p>
+          <p>Enter The Number of Options (Numerically):</p>
           <input type="text" name="count" id="count">
         </div>
         <button type="submit" class="btn btn-primary">Create New Poll</button>
@@ -50,12 +50,11 @@
         const qu = form.find('#question');
 
         // Set up Question
-        const question =
-        $(`<h4 class="ml-4 mt-2"> Possible unique responses for: </h4>
-           <h4 id="quest" class="ml-4 mb-2 mt-2 "> ${qu.val()} </h4>`);
+        const question = $(`<h4 id="quest" class="ml-4 mb-2 mt-2 "> ${qu.val()} </h4>`);
 
         // Make the form
         const list = $('<form class="m-2 border p-3">');
+        list.append($(`<h6 class="mb-2"> Possible unique responses: </h6>`));
         for (q = 0; q < cnt.val(); q++) {
           const li = $(`<div class = "form-group"> <input type="text" name="answer"></div>`)
           list.append(li);}
